@@ -1,0 +1,21 @@
+reate database govgdf;
+
+use govgdf
+
+create table remuneracao_2013_01(
+NOME varchar(60),
+CPF_FORMATO char(11),
+DC_EMPRESA varchar(70),
+DC_CARGO varchar(40),
+DC_FUNCAO varchar(40),
+DC_GRUPO_SITFUNC varchar(40),
+CO_MES_REFERENCIA int(11),
+VL_LIQUIDO decimal(8,2)
+);
+
+
+
+insert into remuneracao_2013_01
+(NOME,CPF_FORMATO,DC_EMPRESA,DC_CARGO,DC_FUNCAO,DC_GRUPO_SITFUNC,CO_MES_REFERENCIA,VL_LIQUIDOVL_LIQUIDO)
+values
+
