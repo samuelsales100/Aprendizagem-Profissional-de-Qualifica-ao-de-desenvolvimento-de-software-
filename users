@@ -1,0 +1,31 @@
+
+create database bd_estudo_vendas;
+
+create user  'samuel.sales'@' localhost' identified by '12344';
+
+grant select 
+on *.*
+to samuelsales@localhost;
+
+
+grant insert 
+on bd_estudo_vendas.*
+to  samuelsales@localhost;
+
+grant insert
+on bd_estudo_vendas.tb_pround
+to samuelsales@localhost;
+
+grant
+ select(cli_cod,cli_nome,cli_cpf),
+update(cli_end_cep)
+on bd_estudo_vendas.tb_cli
+to bd_estudo_vendas
+
+grant insert update 
+on 'bd_caso_estudo_vendas'. 'tb_func'
+to root@localhost;
+
+revoke insert, update
+on `bd_caso_estudo_vendas`. `tb_func`
+from root@localhost;
