@@ -1,0 +1,97 @@
+/*Criação das Tabelas*/
+CREATE TABLE `bd_exercicio`.`tb_funcionario`(
+    `func_codigo` INT NOT NULL PRIMARY KEY,
+	`func_nome` VARCHAR(60) NULL,
+	`func_cpf` VARCHAR(13) NULL,
+	`forn_end` VARCHAR(90) NULL,
+    `forn_salario` NUMERIC,
+    `ger_depto_cod` INT,
+    `trab_depto_cod` INT,
+     `proj_cod` INT 
+);     
+  CREATE TABLE `bd_exercicio`. `tb_departamento`(
+     `depto_codigo` INT NOT NULL PRIMARY KEY,  
+	 `depto_nome` VARCHAR(60) NULL,  
+     `local_cod`  INT  
+  );  
+   CREATE TABLE `bd_exercicio`.`tb_projeto`(
+   `proj_codigo` INT NOT NULL PRIMARY KEY,
+   `proj_numero`INT, 
+   `depto_cod` INT,
+   `local_cod` INT
+);
+ CREATE TABLE `bd_exercicio`.`tb_local`(
+ `local_codigo` INT NOT NULL PRIMARY KEY,
+ `local_desc` VARCHAR(60) NULL
+ );
+
+
+ALTER TABLE  `bd_exercicio`.`tb_funcionario`
+ADD CONSTRAINT `fk_ger_depto_cod`
+FOREIGN KEY (`ger_depto_cod`)
+REFERENCES `bd_exercicio`.`tb_departamento` (`depto_codigo`);
+  
+/*INDICE E FK FUNCIONARIO /TRABALHA_PARA/ DEPARTAMENTO*/
+ALTER TABLE `bd_exercicio`.`tb_funcionario`
+ADD INDEX `fk_trab_depto_cod_idx` (`trab_depto_cod` ASC);
+  
+ALTER TABLE `bd_exercicio`.`tb_funcionario`
+ADD CONSTRAINT `fk_trab_depto_cod`
+FOREIGN KEY (`trab_depto_cod`)
+REFERENCES `bd_exercicio`.`tb_departamento` (`depto_codigo`);
+
+/*INDICE E FK DEPARTAMENTO /TRABALHA_NO/ PROJETO*/
+ALTER TABLE `bd_exercicio`.`tb_funcionario`
+ADD CONSTRAINT `fk_proj_cod`
+FOREIGN KEY (`proj_cod`)
+REFERENCES `bd_exercicio`.`tb_projeto` (`proj_codigo`);
+
+/*INDICE E FK DEPARTAMENTO LOCAL / ATRIBUTO MULTIVALORADO*/
+ALTER TABLE `bd_exercicio`.`tb_departamento`
+ADD INDEX `fk_local_depto_cod_idx` (`local_cod` ASC);
+
+ALTER TABLE `bd_exercicio`.`tb_departamento`
+ADD CONSTRAINT `fk_depto_local_cod`
+FOREIGN KEY (`local_cod`)
+REFERENCES `bd_exercicio`.`tb_local` (`local_codigo`);
+
+
+
+/*INSERINDO DADOS NA TABELA LOCAL*/
+INSERT INTO  `bd_exercicio`.`tb_local`(local_codigo, local_desc) VALUES (1, 'São Paulo');
+INSERT INTO  `bd_exercicio`.`tb_local`(local_codigo, local_desc) VALUES (2, 'Minas Gerais');
+INSERT INTO  `bd_exercicio`.`tb_local`(local_codigo, local_desc) VALUES (4, 'Rio de Janeiro');
+
+/*INSERINDO DADOS NA TABELA DEPARTAMENTO*/
+INSERT INTO `bd_exercicio`.`tb_departamento`(depto_codigo, depto_nome, local_cod)
+   VALUES (1, 'TI', 1);
+   
+ INSERT INTO `bd_exercicio`.`tb_departamento`(depto_codigo, depto_nome, local_cod)
+   VALUES (2, 'RH', 2); 
+   
+   INSERT INTO `bd_exercicio`.`tb_departamento`(depto_codigo, depto_nome, local_cod)
+   VALUES (4, 'ADM', 4);
+   
+  /*INSERINDO DADOS NA TABELA PROJETO*/ 
+  INSERT INTO `bd_exercicio`.`tb_projeto`(proj_codigo, proj_numero, depto_cod, local_cod)
+   VALUES (1, 11, 1, 1); 
+   
+   INSERT INTO `bd_exercicio`.`tb_projeto`(proj_codigo, proj_numero, depto_cod, local_cod)
+   VALUES (2, 22, 2, 2); 
+   
+ /*INSERINDO FUNCIONARIO QUE TRABALHA NO DEPTO 1 E PROJETO 1, ESTE  FUNCIONARIO  NÃO GERENCIA UM DEPARTAMENTO*/ 
+  INSERT INTO `bd_exercicio`.`tb_funcionario`(func_codigo, func_nome, func_cpf, forn_end, forn_salario, ger_depto_cod, trab_depto_cod, proj_cod)
+      VALUES (1, 'Jose Silva', '12312312344', 'Endereco',  2000, null, 1, 1);
+      
+      /*INSERINDO FUNCIONARIO QUE TRABALHA E GERENCIA O DEPARTAMENTO 2, E TRABALHA TAMBÉM NO PROJETO 2*/
+      INSERT INTO `bd_exercicio`.`tb_funcionario` (func_codigo, func_nome, func_cpf, forn_end, forn_salario, ger_depto_cod, trab_depto_cod, proj_cod)
+           VALUES (2, 'Ana Silva', '12345678944', 'Endereco', 3000, 2, 2, 2);
+
+
+
+
+SELECT func_nome, depto_nome, proj_numero
+FROM `bd_exercicio`.`tb_funcionario`
+INNER JOIN `bd_exercicio`.`tb_departamento` on depto_codigo = trab_depto_cod
+INNER JOIN `bd_exercicio`.`tb_projeto` on proj_codigo = proj_cod
+  
